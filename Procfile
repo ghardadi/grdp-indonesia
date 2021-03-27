@@ -1,1 +1,1 @@
-web:gunicorn GRDP_Indonesia:server
+web: gunicorn GRDP_Indonesia:server
