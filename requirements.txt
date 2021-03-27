@@ -1,6 +1,7 @@
 numpy
 pandas
 geopandas
+gunicorn
 plotly
 dash
 dash_core_components
