@@ -139,42 +139,51 @@ fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 # fig.show()
 
 # Deploying application
-title = 'GDP Per Kapita Kabupaten di Indonesia Tahun 2018'
+title = 'GRDP per Kapita Kabupaten di Indonesia Tahun 2018'
 
 app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div([
-    dcc.Markdown(
-        title, id='Title', 
-        style={"font": "32px Arial, sans-serif",
-              'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
-    dcc.RadioItems(id='Parameter',
+    html.H1(id='Title', children=title,
+            style={"font": "36px Arial, sans-serif", 'text-align':'center'}),
+    # dcc.Markdown(
+    #     title, id='Title',
+    #     style={"font": "28px Arial, sans-serif", "margin-block": "0",
+    #           'display': 'block', 'align-items': 'center', 'justify-content': 'center'}),
+    html.Div([dcc.RadioItems(id='Parameter',
         options=[
         {'label': 'Population', 'value': 'Populasi'},
         {'label': 'GRDP', 'value': 'GRDP'},
-        {'label': 'GRDP per capita', 'value': 'GRDPpc'}],
-        value='GRDPpc', labelStyle={'display': 'inline-block'}, inputStyle={"margin-left": "25px","margin-right": "15px"},
-        style={"margin-bottom": "18px", "font": "20px Arial, sans-serif",
-              'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
-    dcc.Graph(id='GRDP Figure', figure=fig, style={"margin-bottom": "10px"}),
-    dcc.Markdown('Tahun 2018', id='Tahun', 
-        style={"font": "20px Arial, sans-serif",
-              'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
-    dcc.Slider(id='Year', min=2014, max=2018, step=1,
+        {'label': 'GRDP per kapita', 'value': 'GRDPpc'}],
+        value='GRDPpc', labelStyle={'display': 'inline-block'},
+        inputStyle={"margin-left": "25px","margin-right": "15px"},
+        style={"margin-bottom": "0px", "font": "24px Arial, sans-serif",
+              'display': 'flex', 'align-items': 'center', 'justify-content': 'left'}),
+    dcc.Markdown('Tahun', style={"margin-bottom": "0px", "font": "24px Arial, sans-serif",
+                                 'display': 'flex', 'align-items': 'center',
+                                 'justify-content': 'center'}),
+    html.Div([dcc.Slider(id='Year', min=2014, max=2018, step=1,
     marks={
-        2014: {'label':'2014', 'style':{"font": "16px Arial, sans-serif"}},
-        2015: {'label':'2015', 'style':{"font": "16px Arial, sans-serif"}},
-        2016: {'label':'2016', 'style':{"font": "16px Arial, sans-serif"}},
-        2017: {'label':'2017', 'style':{"font": "16px Arial, sans-serif"}},
-        2018: {'label':'2018', 'style':{"font": "16px Arial, sans-serif"}}},
-    value=2018)  
+        2014: {'label':'2014', 'style':{"font": "18px Arial, sans-serif"}},
+        2015: {'label':'2015', 'style':{"font": "18px Arial, sans-serif"}},
+        2016: {'label':'2016', 'style':{"font": "18px Arial, sans-serif"}},
+        2017: {'label':'2017', 'style':{"font": "18px Arial, sans-serif"}},
+        2018: {'label':'2018', 'style':{"font": "18px Arial, sans-serif"}}},
+    value=2018)], style = {"display": "grid", "grid-template-columns": "100%",
+                           "padding": "32px 24px 0px 24px"}),
+    dcc.Markdown()],
+    style={"margin-bottom": "14px", "display": "grid", "grid-template-columns": "41% 4% 53% 2%"}),
+    dcc.Graph(id='GRDP Figure', figure=fig,
+              style={"margin-top": "0px", "margin-bottom": "8px"}),
+    dcc.Markdown('Created by Gilang Hardadi', id='Creator', 
+        style={"font": "16px Arial, sans-serif",
+              'display': 'flex'})
     ])
 
 @app.callback(
     Output('Title', 'children'),
     Output('GRDP Figure', 'figure'),
-    Output('Tahun', 'children'),
     Input('Parameter', 'value'),
     Input('Year', 'value'))
 
@@ -206,7 +215,7 @@ def update_graph(par, year):
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-    return title, fig, 'Tahun ' + str(year)
+    return title, fig
 
 if __name__ == '__main__':
     app.run_server(debug=True)
